@@ -126,4 +126,33 @@ defmodule Stripe.SubscriptionTest do
       assert_stripe_requested(:delete, "/v1/subscriptions/#{subscription.id}/discount")
     end
   end
+
+  describe "struct fields" do
+    test "includes current_period_start and current_period_end fields" do
+      # Test that the struct definition includes the patched fields
+      # These fields exist in Stripe's API but are missing from their OpenAPI spec
+      # See: https://docs.stripe.com/api/subscriptions/object
+      struct_fields = Stripe.Subscription.__struct__() |> Map.keys()
+      
+      assert :current_period_start in struct_fields,
+        "Subscription struct should include :current_period_start field"
+      
+      assert :current_period_end in struct_fields,
+        "Subscription struct should include :current_period_end field"
+    end
+
+    test "can create struct with current_period fields" do
+      # Test that we can actually use these fields without KeyError
+      now = System.system_time(:second)
+      
+      subscription = %Stripe.Subscription{
+        id: "sub_test",
+        current_period_start: now,
+        current_period_end: now + 2592000  # 30 days later
+      }
+      
+      assert subscription.current_period_start == now
+      assert subscription.current_period_end == now + 2592000
+    end
+  end
 end
