@@ -8,6 +8,9 @@ defmodule Stripe.OpenApi.Phases.Compile do
   def run(blueprint, _options) do
     modules = Enum.map(blueprint.components, fn {_k, component} -> component.module end)
 
+    # Patch missing fields in components that Stripe's OpenAPI spec omits
+    blueprint = patch_missing_fields(blueprint)
+
     for {_name, component} <- blueprint.components do
       funcs_types =
         for operation <- component.operations,
@@ -96,7 +99,7 @@ defmodule Stripe.OpenApi.Phases.Compile do
                   path =
                     Stripe.OpenApi.Path.replace_path_params(
                       unquote(operation_definition.path),
-                      unquote(operation_definition.path_parameters),
+                      unquote(Macro.escape(operation_definition.path_parameters)),
                       unquote(argument_names)
                     )
 
@@ -144,7 +147,7 @@ defmodule Stripe.OpenApi.Phases.Compile do
                     path =
                       Stripe.OpenApi.Path.replace_path_params(
                         unquote(operation_definition.path),
-                        unquote(operation_definition.path_parameters),
+                        unquote(Macro.escape(operation_definition.path_parameters)),
                         unquote(argument_values)
                       )
 
@@ -1291,4 +1294,37 @@ defmodule Stripe.OpenApi.Phases.Compile do
       do: "#{name}_field",
       else: name
   end
+
+  # Patch missing fields that Stripe's OpenAPI spec omits but are in the actual API
+  # Reference: https://docs.stripe.com/api
+  defp patch_missing_fields(blueprint) do
+    %{blueprint | components: patch_components(blueprint.components)}
+  end
+
+  defp patch_components(components) do
+    Enum.map(components, fn {name, component} ->
+      {name, patch_component(name, component)}
+    end)
+    |> Enum.into(%{})
+  end
+
+  defp patch_component("subscription", component) do
+    # Add missing subscription fields that exist in the API but not in the OpenAPI spec
+    # See: https://docs.stripe.com/api/subscriptions/object
+    missing_properties = %{
+      "current_period_end" => %{
+        "type" => "integer",
+        "description" => "End of the current period that the subscription has been invoiced for. At the end of this period, a new invoice will be created."
+      },
+      "current_period_start" => %{
+        "type" => "integer",
+        "description" => "Start of the current period that the subscription has been invoiced for."
+      }
+    }
+
+    updated_properties = Map.merge(component.properties, missing_properties)
+    %{component | properties: updated_properties}
+  end
+
+  defp patch_component(_name, component), do: component
 end

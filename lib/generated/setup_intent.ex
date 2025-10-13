@@ -62,11 +62,11 @@ defmodule Stripe.SetupIntent do
   )
 
   (
-    @typedoc "If this is a `acss_debit` SetupIntent, this sub-hash contains details about the ACSS Debit payment method options."
+    @typedoc "If this is an `acss_debit` PaymentMethod, this hash contains details about the ACSS Debit payment method."
     @type acss_debit :: %{
-            optional(:currency) => :cad | :usd,
-            optional(:mandate_options) => mandate_options,
-            optional(:verification_method) => :automatic | :instant | :microdeposits
+            optional(:account_number) => binary,
+            optional(:institution_number) => binary,
+            optional(:transit_number) => binary
           }
   )
 
@@ -523,8 +523,8 @@ defmodule Stripe.SetupIntent do
   )
 
   (
-    @typedoc "If this is a `sepa_debit` PaymentMethod, this hash contains details about the SEPA debit bank account."
-    @type sepa_debit :: %{optional(:iban) => binary}
+    @typedoc "If this is a `sepa_debit` SetupIntent, this sub-hash contains details about the SEPA Debit payment method options."
+    @type sepa_debit :: %{optional(:mandate_options) => mandate_options}
   )
 
   (
@@ -562,12 +562,13 @@ defmodule Stripe.SetupIntent do
   )
 
   (
-    @typedoc "If this is a `us_bank_account` SetupIntent, this sub-hash contains details about the US bank account payment method options."
+    @typedoc "If this is an `us_bank_account` PaymentMethod, this hash contains details about the US bank account payment method."
     @type us_bank_account :: %{
-            optional(:financial_connections) => financial_connections,
-            optional(:mandate_options) => mandate_options,
-            optional(:networks) => networks,
-            optional(:verification_method) => :automatic | :instant | :microdeposits
+            optional(:account_holder_type) => :company | :individual,
+            optional(:account_number) => binary,
+            optional(:account_type) => :checking | :savings,
+            optional(:financial_connections_account) => binary,
+            optional(:routing_number) => binary
           }
   )
 
@@ -619,17 +620,19 @@ defmodule Stripe.SetupIntent do
           Stripe.OpenApi.Path.replace_path_params(
             "/v1/setup_intents/{intent}",
             [
-              %OpenApiGen.Blueprint.Parameter{
+              %{
+                __struct__: OpenApiGen.Blueprint.Parameter,
                 in: "path",
                 name: "intent",
                 required: true,
-                schema: %OpenApiGen.Blueprint.Parameter.Schema{
-                  name: "intent",
-                  title: nil,
-                  type: "string",
+                schema: %{
+                  __struct__: OpenApiGen.Blueprint.Parameter.Schema,
+                  any_of: [],
                   items: [],
+                  name: "intent",
                   properties: [],
-                  any_of: []
+                  title: nil,
+                  type: "string"
                 }
               }
             ],
@@ -714,17 +717,19 @@ defmodule Stripe.SetupIntent do
           Stripe.OpenApi.Path.replace_path_params(
             "/v1/setup_intents/{intent}",
             [
-              %OpenApiGen.Blueprint.Parameter{
+              %{
+                __struct__: OpenApiGen.Blueprint.Parameter,
                 in: "path",
                 name: "intent",
                 required: true,
-                schema: %OpenApiGen.Blueprint.Parameter.Schema{
-                  name: "intent",
-                  title: nil,
-                  type: "string",
+                schema: %{
+                  __struct__: OpenApiGen.Blueprint.Parameter.Schema,
+                  any_of: [],
                   items: [],
+                  name: "intent",
                   properties: [],
-                  any_of: []
+                  title: nil,
+                  type: "string"
                 }
               }
             ],
@@ -759,17 +764,19 @@ defmodule Stripe.SetupIntent do
           Stripe.OpenApi.Path.replace_path_params(
             "/v1/setup_intents/{intent}/cancel",
             [
-              %OpenApiGen.Blueprint.Parameter{
+              %{
+                __struct__: OpenApiGen.Blueprint.Parameter,
                 in: "path",
                 name: "intent",
                 required: true,
-                schema: %OpenApiGen.Blueprint.Parameter.Schema{
-                  name: "intent",
-                  title: nil,
-                  type: "string",
+                schema: %{
+                  __struct__: OpenApiGen.Blueprint.Parameter.Schema,
+                  any_of: [],
                   items: [],
+                  name: "intent",
                   properties: [],
-                  any_of: []
+                  title: nil,
+                  type: "string"
                 }
               }
             ],
@@ -809,17 +816,19 @@ defmodule Stripe.SetupIntent do
           Stripe.OpenApi.Path.replace_path_params(
             "/v1/setup_intents/{intent}/confirm",
             [
-              %OpenApiGen.Blueprint.Parameter{
+              %{
+                __struct__: OpenApiGen.Blueprint.Parameter,
                 in: "path",
                 name: "intent",
                 required: true,
-                schema: %OpenApiGen.Blueprint.Parameter.Schema{
-                  name: "intent",
-                  title: nil,
-                  type: "string",
+                schema: %{
+                  __struct__: OpenApiGen.Blueprint.Parameter.Schema,
+                  any_of: [],
                   items: [],
+                  name: "intent",
                   properties: [],
-                  any_of: []
+                  title: nil,
+                  type: "string"
                 }
               }
             ],
@@ -854,17 +863,19 @@ defmodule Stripe.SetupIntent do
           Stripe.OpenApi.Path.replace_path_params(
             "/v1/setup_intents/{intent}/verify_microdeposits",
             [
-              %OpenApiGen.Blueprint.Parameter{
+              %{
+                __struct__: OpenApiGen.Blueprint.Parameter,
                 in: "path",
                 name: "intent",
                 required: true,
-                schema: %OpenApiGen.Blueprint.Parameter.Schema{
-                  name: "intent",
-                  title: nil,
-                  type: "string",
+                schema: %{
+                  __struct__: OpenApiGen.Blueprint.Parameter.Schema,
+                  any_of: [],
                   items: [],
+                  name: "intent",
                   properties: [],
-                  any_of: []
+                  title: nil,
+                  type: "string"
                 }
               }
             ],
