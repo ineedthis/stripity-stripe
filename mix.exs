@@ -1,14 +1,14 @@
 defmodule Stripe.Mixfile do
   use Mix.Project
 
-  @source_url "https://github.com/code-corps/stripity_stripe"
+  @source_url "https://github.com/ineedthis/stripity-stripe"
   @version "3.2.0"
 
   def project do
     [
       app: :stripity_stripe,
       version: @version,
-      elixir: "~> 1.11",
+      elixir: "~> 1.14",
       deps: deps(),
       docs: docs(),
       package: package(),
@@ -54,18 +54,18 @@ defmodule Stripe.Mixfile do
 
   defp deps do
     [
-      {:hackney, "~> 1.18"},
-      {:jason, "~> 1.1"},
-      {:telemetry, "~> 1.1"},
+      {:hackney, "~> 1.25"},
+      {:jason, "~> 1.4"},
+      {:telemetry, "~> 1.3"},
       {:uri_query, "~> 0.2.0"},
-      {:plug, "~> 1.14", optional: true},
+      {:plug, "~> 1.18", optional: true},
       # Non-production dependencies
-      {:inch_ex, ">= 0.0.0", only: [:dev, :test]},
-      {:mox, ">= 0.0.0", only: :test},
-      {:erlexec, "~> 2.0", only: :test},
-      {:dialyxir, ">= 0.0.0", only: [:dev, :test], runtime: false},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-      {:excoveralls, ">= 0.0.0", only: :test}
+      {:inch_ex, "~> 2.0", only: [:dev, :test]},
+      {:mox, "~> 1.2", only: :test},
+      {:erlexec, "~> 2.2", only: :test},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.38", only: :dev, runtime: false},
+      {:excoveralls, "~> 0.18", only: :test}
     ]
   end
 
@@ -87,16 +87,18 @@ defmodule Stripe.Mixfile do
 
   defp package do
     [
-      description: "A Stripe client for Elixir.",
-      files: ["lib", "LICENSE*", "mix.exs", "README*", "CHANGELOG*"],
+      description: "A Stripe client for Elixir. Fork with enhanced code generation and latest API spec.",
+      files: ["lib", "LICENSE*", "mix.exs", "README*", "CHANGELOG*", "priv/openapi"],
       licenses: ["BSD-3-Clause"],
       maintainers: [
-        "Maarten van Vliet",
-        "Nikola Begedin",
-        "Scott Newcomer"
+        "ineedthis (fork maintainer)",
+        "Maarten van Vliet (original)",
+        "Nikola Begedin (original)",
+        "Scott Newcomer (original)"
       ],
       links: %{
-        "GitHub" => @source_url
+        "GitHub" => @source_url,
+        "Upstream" => "https://github.com/beam-community/stripity-stripe"
       }
     ]
   end
