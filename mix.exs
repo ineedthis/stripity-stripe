@@ -54,17 +54,17 @@ defmodule Stripe.Mixfile do
 
   defp deps do
     [
-      {:hackney, "~> 1.25"},
+      {:hackney, ">= 1.25.0 and < 4.0.0"},
       {:jason, "~> 1.4"},
-      {:telemetry, "~> 1.3"},
+      {:telemetry, "~> 1.4"},
       {:uri_query, "~> 0.2.0"},
-      {:plug, "~> 1.18", optional: true},
+      {:plug, "~> 1.19", optional: true},
       # Non-production dependencies
-      {:inch_ex, "~> 2.0", only: [:dev, :test]},
+      {:inch_ex, "~> 2.1", only: [:dev, :test]},
       {:mox, "~> 1.2", only: :test},
-      {:erlexec, "~> 2.2", only: :test},
-      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.38", only: :dev, runtime: false},
+      {:erlexec, "~> 2.2.2", only: :test},
+      {:dialyxir, "~> 1.4.7", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.40", only: :dev, runtime: false},
       {:excoveralls, "~> 0.18", only: :test}
     ]
   end
@@ -87,7 +87,8 @@ defmodule Stripe.Mixfile do
 
   defp package do
     [
-      description: "A Stripe client for Elixir. Fork with enhanced code generation and latest API spec.",
+      description:
+        "A Stripe client for Elixir. Fork with enhanced code generation and latest API spec.",
       files: ["lib", "LICENSE*", "mix.exs", "README*", "CHANGELOG*", "priv/openapi"],
       licenses: ["BSD-3-Clause"],
       maintainers: [
