@@ -54,7 +54,7 @@ defmodule Stripe.Mixfile do
 
   defp deps do
     [
-      {:hackney, ">= 1.25.0 and < 4.0.0"},
+      {:hackney, "~> 1.25 or ~> 4.0"},
       {:jason, "~> 1.4"},
       {:telemetry, "~> 1.4"},
       {:uri_query, "~> 0.2.0"},
